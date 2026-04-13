@@ -43,10 +43,3 @@ def run():
 if __name__ == "__main__":   #실행할 파일의 이름이 main 일때만 실행해라
     run()
 
-#시작
-while True:
-    print("메뉴 출력")
-    choice = input("선택: ")
-    
-    if choice == "5":  # 종료 선택 시
-        break          # 루프 탈출
