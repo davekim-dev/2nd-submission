@@ -26,3 +26,18 @@ def load_data():
     except json.JSONDecodeError:            # 파일 손상됐으면
         print("⚠️  데이터 파일이 손상되었습니다. 기본 데이터로 초기화합니다.")
         return DEFAULT_QUIZZES              # 기본 데이터로 복구
+    
+
+
+# quiz.py
+
+class Quiz:
+    def __init__(self, question, choices, answer):
+        self.question = question
+        self.choices = choices
+        self.answer = answer
+        
+     def display(self):
+        print(f"\n{self.question}")
+        for choice in self.choices:
+            print(choice)
