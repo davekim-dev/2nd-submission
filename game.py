@@ -40,14 +40,16 @@ def show_high_score():
 
     print(f"최고 점수: {high_score}/{total}")
 
-
+#high_socre을 class로 묶는다면?  >> 가능은 하나.. 오랫동안 저장해야 할 객체가 없기 때문에 굳이?
 
 class QuizGame:
     def __init__(self):                   
         self.quizzes = load_data()     # QuizGame 에서 사용할 self.quizzes를 load_data()로 설정해 (객체 안에 내용을 넣는 것)
-        self.score = 0               
-                                           # 객체 받아올 때 하는 첫 초기화 : 그럼 얘는 왜 필요한가? 어차피 처음 받아오는데
-                                           # !! 점수 초기화 보다는 'self.score' 라는 객체를 정의하는 것
+        self.score = 0     #초기값 설정 + 객체 정의 self.score 가 있다.
+        self.high_score = load_high_score()   #최고 점수도 객체 안에 넣어주는 것 (게임이 끝났을 때 최고 점수와 비교하기 위해)          
+
+        # 게임 진행하면서 그 값이 변동되는 애들을 객체로 넣음                                
+                                          
     def play(self):                  
         if not self.quizzes:
             print("⚠️  퀴즈가 없습니다. 먼저 퀴즈를 추가해주세요.")
