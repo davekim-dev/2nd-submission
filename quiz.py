@@ -8,17 +8,16 @@ def load_data():
                                             #encoding='utf-8' - 한글깨짐 방지(다국어) / f - 열린 파일 /
                                             #with open ()as f - 열린 파일을 자동으로 닫아줌
                                             #json.load(f) - 열린 파일 f 를 python으로 변경
-                                                '''
-                                                 open()으로 파일 열기
-                                                    └── as f 로 파일을 f 변수에 담기
-                                                        └── json.load(f) 로 파이썬 데이터로 변환
-                                                            └── return 으로 반환
-                                                                └── with 블록 끝나면 파일 자동으로 닫힘
-                                                
-                                                #f = open("state.json", "r")
-                                                #data = json.load(f)
-                                                #f.close() <-- 직접 닫아주어야!             
-                                                '''
+
+                                            # open()으로 파일 열기
+                                            #   -> as f 로 파일을 f 변수에 담기
+                                            #   -> json.load(f) 로 파이썬 데이터로 변환
+                                            #   -> return 으로 반환
+                                            #   -> with 블록 끝나면 파일 자동으로 닫힘
+                                            #
+                                            # f = open("state.json", "r")
+                                            # data = json.load(f)
+                                            # f.close()  # 직접 닫아주어야 함
    
 
     except json.JSONDecodeError:            # 파일 손상됐으면
@@ -34,7 +33,7 @@ class Quiz:
         self.choices = choices
         self.answer = answer
         
-     def display(self):
+    def display(self):
         print(f"\n{self.question}")    #\n 으로 시작하니까 한 줄 띄고 시작
         for choice in self.choices:  
             print(choice)            #문제 객체에서 선택지들을 반복적으로 출력한다는 것임
