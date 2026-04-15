@@ -57,7 +57,7 @@ def load_data():
 
     try:
         with open("state.json", "r", encoding="utf-8") as f:     #utf-8: 기본 내장된 인코딩 방식(세계 표준) 확실히 선언
-            return json.load(f)             #open- 파일 열기  / state.json - 열 파일 / 'r' - read / 
+            data= json.load(f)             #open- 파일 열기  / state.json - 열 파일 / 'r' - read / 
                                             #encoding='utf-8' - 한글깨짐 방지(다국어) / f - 열린 파일 /
                                             #with open ()as f - 열린 파일을 자동으로 닫아줌
                                             #json.load(f) - 열린 파일 f 를 python으로 변경(jason 사용해서)
@@ -73,7 +73,7 @@ def load_data():
                                             # f.close()  # 직접 닫아주어야 함
         quizzes = []
         for item in data:
-            quiz = Quiz(item["question"], item["choices"], item["answer"])   #item은 dict에서 내용을 꺼내는 것
+            quiz = Quiz(item["question"], item["choices"], item["answer"])   #item은 dict에서 내용을 꺼내 객체로 전환하는 것
             quizzes.append(quiz)
 
         return quizzes      #json 파일을 객체 리스트 qkuizzes 반환
@@ -81,3 +81,95 @@ def load_data():
     except json.JSONDecodeError:            # 파일 손상됐으면
         print("⚠️  데이터 파일이 손상되었습니다. 기본 데이터로 초기화합니다.")
         return DEFAULT_QUIZZES              # 기본 데이터로 복구
+    
+
+#퀴즈 생성 및 저장 
+
+def get_text_input(message):
+    while True:
+        value = input(message).strip()   #입력값 양쪽 공백 제거 (사용자 실수 방지) main.py의 choice처럼 아예 안되게 하려는 것이 아님! 
+
+        if value == "":
+            print("⚠️  입력값이 없습니다.")
+            continue
+
+        return value   #return = 함수 종료
+    
+
+def get_answer_input(message):
+    while True:
+        value = input(message).strip()
+
+        if value == "":
+            print("⚠️  입력값이 없습니다.")
+            continue
+
+        try:
+            number = int(value)
+        except ValueError:
+            print("⚠️  숫자를 입력해주세요.")
+            continue
+
+        if number < 1 or number > 4:
+            print("⚠️  1~4 사이의 숫자를 입력해주세요.")
+            continue
+
+        return number
+    
+    #while True:
+        #value = input("정답 번호 입력: ").strip()
+
+        #if not value.isdigit():        #isdigit() - 문자열이 숫자(0~9)로만 이루어져 있는지 확인 (음수, 소수는 False)
+            #print("숫자를 입력하세요.")
+            #continue
+
+        #num = int(value)
+
+        #if 1 <= num <= 4:
+            #return num
+        #else:
+        #    print("1~4 사이 숫자 입력")
+
+def save_data(quizzes):
+    data = []
+
+    for quiz in quizzes:    #quiz 객체들을 하나씩 꺼내서
+        item = {                    
+            "question": quiz.question,          #dic 형태로 만듦 (json 형식 따라가기)  
+            "choices": quiz.choices,
+            "answer": quiz.answer
+        }
+        data.append(item)        #list data에 dic item 추가
+
+    with open("state.json", "w", encoding="utf-8") as f:   # 'a' - add라면... 기존 데이터에 추가하는 것 (덮어쓰기X) 밑에 기존 데이터를 불러와야 할까?
+                                                           # 'a'로 추가하면... 그냥 dic만 하나 붙이는거!! json은 list 안의 dic 형태임!!! 때문에 list 안에 dic을 넣기 위해서는 'w'가 불가피!
+        json.dump(data, f, ensure_ascii=False, indent=4)
+            #dump(data,f) - 파이썬 데이터를 json 파일로 저장
+            #ensure_ascii=False - 한글 깨짐 방지
+            # indent=4 - json 파일을 보기 좋게 들여쓰기  
+
+
+
+
+def add_quiz():
+    question = get_text_input("문제를 입력하세요: ")
+    choice1 = get_text_input("1번 선택지를 입력하세요: ")
+    choice2 = get_text_input("2번 선택지를 입력하세요: ")
+    choice3 = get_text_input("3번 선택지를 입력하세요: ")
+    choice4 = get_text_input("4번 선택지를 입력하세요: ")
+    answer = get_answer_input("정답 번호를 입력하세요 (1~4): ")
+
+    choices = [
+        f"1. {choice1}",
+        f"2. {choice2}",
+        f"3. {choice3}",
+        f"4. {choice4}"
+    ]                       #display가 choices 리스트를 받아서 출력하기 때문에 1. 2. 3. 4. 형식으로 만들어주는 것
+
+    new_quiz = Quiz(question, choices, answer)   #new_quiz 객체 생성... 내용 바뀌지 않을 것이니 Tuple 사용
+
+    quizzes = load_data()    #기존 데이터를 안 불러오면... 새로 만든 질문만 저장되고 기존 질문들은 사라짐 
+             #밑에 save_data(quizzes) 할 때 기존 정보들하고 같이 저장해야... new_quiz만 quizzes에 저장하면.. 기존 애들은 사라지는 것
+             #load_data는 list임!!! 
+    quizzes.append(new_quiz)
+    save_data(quizzes)      #새로운 퀴즈가 추가된 quizzes 리스트 저장

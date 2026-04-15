@@ -1,3 +1,6 @@
+from quiz import add_quiz
+
+
 def show_menu():
     print("\n===== 퀴즈 게임 =====")
     print("1. 퀴즈 풀기")
@@ -29,7 +32,7 @@ def run():
         if choice == "1":
             print("[퀴즈 풀기] - 아직 구현 전")
         elif choice == "2":
-            print("[퀴즈 추가] - 아직 구현 전")
+            add_quiz()
         elif choice == "3":
             print("[퀴즈 목록] - 아직 구현 전")
         elif choice == "4":
