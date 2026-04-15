@@ -173,3 +173,17 @@ def add_quiz():
              #load_data는 list임!!! 
     quizzes.append(new_quiz)
     save_data(quizzes)      #새로운 퀴즈가 추가된 quizzes 리스트 저장
+
+
+def show_quizzes():
+    quizzes = load_data()    #퀴즈 목록... json에 추가된 함수들도 볼 수 있게!
+    if not quizzes:
+        print("⚠️  저장된 퀴즈가 없습니다.")     #DEFALT_QUIZZES가 있지만... 만일을 대비한 것..
+        return
+    print("\n===== 퀴즈 목록 =====")
+    for index, quiz in enumerate(quizzes, start=1):  #index를 1부터 시작
+        print(f"{index}. {quiz.question}")
+
+    #print("\n===== 퀴즈 목록 =====")
+    #for index, quiz in enumerate(quizzes):
+    #    print(f"{index+1}. {quiz.question}")
