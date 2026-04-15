@@ -1,10 +1,10 @@
-from quiz import Quiz, DEFAULT_QUIZZES
-# quiz.py 에서 class Quiz, DEFAULT_QUIZZES를 가져와라
+from quiz import load_data
+# quiz.py 에서 load_data 함수를 가져와라 (except 부분에서 return 값이 DEFAULT_QUIZZES)
 #from 파일이름 import 가져올 것(객체)
 
 class QuizGame:
     def __init__(self):                   
-        self.quizzes = DEFAULT_QUIZZES     # QuizGame 에서 사용할 self.quizzes를 DEFAULT_QUIZZES로 설정해 (객체 안에 내용을 넣는 것)
+        self.quizzes = load_data()     # QuizGame 에서 사용할 self.quizzes를 load_data()로 설정해 (객체 안에 내용을 넣는 것)
         self.score = 0               
                                            # 객체 받아올 때 하는 첫 초기화 : 그럼 얘는 왜 필요한가? 어차피 처음 받아오는데
                                            # !! 점수 초기화 보다는 'self.score' 라는 객체를 정의하는 것
